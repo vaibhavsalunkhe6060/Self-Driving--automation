@@ -1,9 +1,1511 @@
-body{
+:root {
+    color-scheme: dark;
+
+    --bg: #080d18;
+    --bg-soft: #0d1525;
+    --panel: rgba(17, 28, 47, 0.94);
+    --panel-hover: #192941;
+    --panel-inner: #111e32;
+
+    --border: #273a56;
+    --border-bright: #365576;
+
+    --text: #edf5ff;
+    --muted: #92a5bf;
+
+    --cyan: #42d9f5;
+    --cyan-soft: rgba(66, 217, 245, 0.12);
+    --green: #62f0ad;
+    --green-soft: rgba(98, 240, 173, 0.12);
+    --purple: #a78bfa;
+    --orange: #ffbd69;
+    --red: #ff647c;
+
+    --radius-sm: 8px;
+    --radius-md: 13px;
+    --radius-lg: 19px;
+
+    --shadow:
+        0 14px 38px rgba(0, 0, 0, 0.22);
+
+    --glow-cyan:
+        0 0 22px rgba(66, 217, 245, 0.13);
+
+    --transition: 180ms ease;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    scroll-behavior: smooth;
+    scrollbar-color: #314966 var(--bg);
+}
+
+body {
     margin: 0;
-    background-color: darkgray;
+    min-height: 100vh;
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            ellipse at 10% 0%,
+            rgba(25, 74, 119, 0.25),
+            transparent 38%
+        ),
+        radial-gradient(
+            ellipse at 90% 10%,
+            rgba(37, 49, 100, 0.15),
+            transparent 34%
+        ),
+        var(--bg);
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button,
+select,
+input[type="checkbox"],
+input[type="range"] {
+    cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+::selection {
+    background: rgba(66, 217, 245, 0.3);
+    color: white;
+}
+
+/* ---------- 2. APP CONTAINER ---------- */
+
+.app-container {
+    width: min(100% - 36px, 1680px);
+    margin-inline: auto;
+}
+
+main {
+    display: grid;
+    gap: 22px;
+    padding-block: 24px 32px;
+}
+
+/* ---------- 3. HEADER ---------- */
+
+.topbar {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 24px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.brand-icon {
+    display: grid;
+    place-items: center;
+
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+
+    border: 1px solid rgba(66, 217, 245, 0.4);
+    border-radius: 15px;
+
+    color: var(--cyan);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(66, 217, 245, 0.19),
+            rgba(66, 217, 245, 0.035)
+        );
+
+    box-shadow: var(--glow-cyan);
+
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.brand h1 {
+    margin: 0;
+    font-size: clamp(22px, 3vw, 32px);
+    line-height: 1.2;
+    letter-spacing: -0.8px;
+    font-weight: 850;
+}
+
+.brand p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.3px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 9px 12px;
+    border: 1px solid rgba(98, 240, 173, 0.2);
+    border-radius: 999px;
+
+    color: var(--green);
+    background: var(--green-soft);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 12px var(--green);
+    }
+
+    50% {
+        opacity: 0.55;
+        box-shadow: 0 0 4px var(--green);
+    }
+}
+
+/* ---------- 4. SECTION HEADINGS ---------- */
+
+h2,
+h3,
+p {
+    overflow-wrap: anywhere;
+}
+
+h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 750;
+    letter-spacing: -0.2px;
+}
+
+h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+p {
+    margin-top: 0;
+}
+
+.panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 19px;
+}
+
+.panel-header p {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* ---------- 5. PANELS ---------- */
+
+.panel {
+    min-width: 0;
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(23, 36, 58, 0.97),
+            rgba(13, 22, 38, 0.98)
+        );
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow);
+
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition);
+}
+
+.panel:hover {
+    border-color: #344d6e;
+}
+
+.section-panel {
+    min-width: 0;
+}
+
+.panel-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+
+    border-radius: 10px;
+    color: var(--cyan);
+    background: var(--cyan-soft);
+
+    font-size: 21px;
+}
+
+/* ---------- 6. BADGES ---------- */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 5px 10px;
+    border: 1px solid rgba(66, 217, 245, 0.25);
+    border-radius: 999px;
+
+    color: var(--cyan);
+    background: var(--cyan-soft);
+
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+}
+
+.badge.success {
+    color: var(--green);
+    background: var(--green-soft);
+    border-color: rgba(98, 240, 173, 0.25);
+}
+
+/* ---------- 7. TOP STATISTICS ---------- */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.stat-card {
+    position: relative;
+    min-width: 0;
     overflow: hidden;
+
+    padding: 17px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25, 40, 63, 0.95),
+            rgba(14, 24, 41, 0.95)
+        );
+
+    transition:
+        transform var(--transition),
+        border-color var(--transition);
+}
+
+.stat-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--cyan),
+        transparent
+    );
+
+    opacity: 0.7;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-bright);
+}
+
+.stat-label {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.stat-card h2 {
+    margin: 11px 0 5px;
+    font-size: clamp(22px, 2.3vw, 31px);
+    font-weight: 850;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* ---------- 8. MAIN SIMULATION LAYOUT ---------- */
+
+.main-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(290px, 0.9fr);
+    align-items: start;
+    gap: 20px;
+}
+
+.simulation-panel {
+    min-width: 0;
+}
+
+.sidebar {
+    display: grid;
+    align-content: start;
+    gap: 17px;
+    min-width: 0;
+}
+
+/* ---------- 9. SIMULATION TOOLBAR ---------- */
+
+.simulation-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+
+    margin-bottom: 13px;
+}
+
+.simulation-toolbar label {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+select,
+input[type="file"] {
+    max-width: 100%;
+    padding: 9px 11px;
+
+    color: var(--text);
+    background: #0e192b;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+select {
+    min-width: 135px;
+}
+
+select:hover {
+    border-color: var(--cyan);
+}
+
+/* ---------- 10. BUTTONS ---------- */
+
+.primary-button,
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    min-height: 39px;
+    padding: 10px 14px;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.3;
+
+    transition:
+        transform var(--transition),
+        background var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+}
+
+.primary-button {
+    color: #061321;
+    background: linear-gradient(120deg, #42d9f5, #63f0c1);
+    box-shadow: 0 4px 16px rgba(66, 217, 245, 0.12);
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(66, 217, 245, 0.23);
+}
+
+.secondary-button {
+    color: var(--text);
+    background: #1c2c44;
+    border-color: #344963;
+}
+
+.secondary-button:hover {
+    background: #263b58;
+    border-color: #52708f;
+    transform: translateY(-1px);
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+/* ---------- 11. CANVAS AND SIMULATION ---------- */
+
+.canvas-wrapper {
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    height: clamp(430px, 70vh, 780px);
+    min-height: 350px;
+
+    overflow: hidden;
+
+    border: 1px solid #38516d;
+    border-radius: var(--radius-md);
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #23452f 0%,
+            #173523 100%
+        );
+
+    box-shadow:
+        inset 0 0 35px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(66, 217, 245, 0.035);
+}
+
+#carCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.simulation-overlay {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+
+    padding: 20px;
+
+    background: rgba(4, 10, 20, 0.64);
+    backdrop-filter: blur(5px);
+
     text-align: center;
 }
-#mycanavas{
-    background-color: lightgray;
+
+.simulation-overlay.hidden {
+    display: none;
+}
+
+.overlay-card {
+    max-width: 360px;
+    padding: 25px;
+
+    border: 1px solid rgba(66, 217, 245, 0.25);
+    border-radius: var(--radius-lg);
+
+    background: rgba(14, 26, 44, 0.94);
+    box-shadow: var(--glow-cyan);
+}
+
+.overlay-card h2 {
+    color: var(--cyan);
+    font-size: clamp(22px, 4vw, 30px);
+}
+
+.overlay-card p {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.2px;
+}
+
+.simulation-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 17px;
+
+    padding: 15px 2px 2px;
+
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.simulation-footer > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+}
+
+.car-dot {
+    background: var(--cyan);
+}
+
+.sensor-dot {
+    background: var(--green);
+}
+
+.road-dot {
+    background: #8b9ab1;
+}
+
+/* ---------- 12. SIMULATION CONTROLS ---------- */
+
+.control-section {
+    margin-top: 22px;
+    padding-top: 19px;
+    border-top: 1px solid var(--border);
+}
+
+.control-section h3 {
+    margin-bottom: 13px;
+}
+
+.slider-group {
+    margin-top: 20px;
+}
+
+.slider-group label,
+.slider-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.slider-group strong,
+.slider-label strong {
+    color: var(--cyan);
+    font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+    display: block;
+    width: 100%;
+    accent-color: var(--cyan);
+}
+
+/* ---------- 13. FITNESS PROGRESS ---------- */
+
+.progress-track {
+    width: 100%;
+    height: 6px;
+    margin-top: 11px;
+
+    overflow: hidden;
+    border-radius: 999px;
+
+    background: #263750;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+
+    border-radius: inherit;
+    background: linear-gradient(90deg, #20b8e0, #62f0ad);
+
+    transition: width 250ms ease;
+    box-shadow: 0 0 12px rgba(98, 240, 173, 0.18);
+}
+
+/* ---------- 14. LIVE TELEMETRY ---------- */
+
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.telemetry-item {
+    min-width: 0;
+    padding: 12px;
+
+    background: rgba(8, 16, 30, 0.58);
+    border: 1px solid #263a54;
+    border-radius: var(--radius-sm);
+}
+
+.telemetry-item span {
+    display: block;
+    margin-bottom: 6px;
+
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.telemetry-item strong {
+    display: block;
+    overflow-wrap: anywhere;
+
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 800;
+
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 15. AI DECISION CENTER ---------- */
+
+.decision-card {
+    margin-bottom: 18px;
+    padding: 15px;
+
+    border: 1px solid rgba(66, 217, 245, 0.2);
+    border-radius: var(--radius-md);
+
+    background:
+        linear-gradient(
+            125deg,
+            rgba(66, 217, 245, 0.09),
+            rgba(98, 240, 173, 0.035)
+        );
+}
+
+.decision-label {
+    color: var(--cyan);
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 1px;
+}
+
+.decision-card h3 {
+    margin-top: 8px;
+    font-size: 19px;
+}
+
+.decision-card p {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.output-row {
+    display: grid;
+    grid-template-columns: 90px minmax(35px, 1fr) 38px;
+    align-items: center;
+    gap: 9px;
+
+    margin-top: 14px;
+}
+
+.output-row > span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.output-row > strong {
+    text-align: right;
+    color: var(--text);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+}
+
+.mini-progress {
+    height: 6px;
+    overflow: hidden;
+
+    border-radius: 99px;
+    background: #293951;
+}
+
+.mini-progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+
+    background: linear-gradient(90deg, #238bd5, var(--cyan));
+    transition: width 120ms ease;
+}
+
+/* ---------- 16. MANUAL DRIVING CONTROLS ---------- */
+
+.manual-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-block: 5px;
+}
+
+.manual-controls button {
+    display: grid;
+    place-items: center;
+
+    width: 47px;
+    height: 43px;
+
+    color: var(--cyan);
+    background: #1b2b43;
+    border: 1px solid #3b5674;
+    border-radius: 10px;
+
+    font-size: 17px;
+    font-weight: 800;
+
+    transition:
+        background var(--transition),
+        transform var(--transition);
+}
+
+.manual-controls button:hover {
+    background: #29415f;
+    transform: translateY(-2px);
+}
+
+.manual-controls button:active {
+    background: #315474;
+    transform: scale(0.96);
+}
+
+.manual-middle {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+}
+
+#brakeButton {
+    color: var(--red);
+    border-color: rgba(255, 100, 124, 0.35);
+}
+
+.help-text {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+/* ---------- 17. NEURAL NETWORK ---------- */
+
+.brain-visualization {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr) 30px minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+
+    padding: 18px;
+
+    background: rgba(7, 14, 26, 0.55);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.brain-layer {
+    min-width: 0;
+}
+
+.brain-layer h3 {
+    margin-bottom: 13px;
+
+    color: var(--cyan);
+    text-align: center;
+
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.neuron-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 7px;
+}
+
+.neuron {
+    display: grid;
+    place-items: center;
+
+    min-height: 27px;
+    padding: 5px 3px;
+
+    border: 1px solid rgba(66, 217, 245, 0.26);
+    border-radius: 7px;
+
+    color: #bfefff;
+    background: rgba(66, 217, 245, 0.07);
+
+    font-size: 9px;
+    text-align: center;
+
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+}
+
+.neuron.active {
+    color: white;
+    background: rgba(66, 217, 245, 0.28);
+    border-color: var(--cyan);
+    box-shadow: 0 0 13px rgba(66, 217, 245, 0.16);
+}
+
+.output-neuron {
+    border-color: rgba(98, 240, 173, 0.3);
+    color: var(--green);
+    background: rgba(98, 240, 173, 0.06);
+}
+
+.brain-connector {
+    display: grid;
+    place-items: center;
+    min-height: 100px;
+
+    color: var(--cyan);
+    font-size: 24px;
+}
+
+/* ---------- 18. SENSOR MONITORING ---------- */
+
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.sensor-card {
+    min-width: 0;
+    padding: 12px 8px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    background: rgba(8, 16, 30, 0.58);
+
+    transition:
+        border-color var(--transition),
+        background var(--transition);
+}
+
+.sensor-card span {
+    display: block;
+    margin-bottom: 7px;
+
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+.sensor-card strong {
+    color: var(--green);
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+}
+
+.sensor-card.warning {
+    border-color: rgba(255, 100, 124, 0.65);
+    background: rgba(255, 100, 124, 0.08);
+}
+
+.sensor-card.warning strong {
+    color: var(--red);
+}
+
+.warning-card {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    margin-top: 13px;
+    padding: 12px;
+
+    border: 1px solid rgba(255, 189, 105, 0.25);
+    border-radius: var(--radius-sm);
+
+    background: rgba(255, 189, 105, 0.06);
+}
+
+.warning-card strong {
+    color: var(--orange);
+    font-size: 11px;
+}
+
+.warning-card span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* ---------- 19. ANALYTICS AND CHARTS ---------- */
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 190px;
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    background: rgba(7, 14, 26, 0.55);
+}
+
+#fitnessChart,
+#trackMap {
+    display: block;
+    width: 100%;
+    height: 240px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+
+    margin-top: 14px;
+}
+
+.analytics-item {
+    min-width: 0;
+    padding: 13px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    background: rgba(8, 16, 30, 0.58);
+}
+
+.analytics-item span {
+    display: block;
+    margin-bottom: 7px;
+
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.analytics-item strong {
+    display: block;
+    overflow-wrap: anywhere;
+
+    color: var(--cyan);
+    font-size: 15px;
+}
+
+/* ---------- 20. MODEL MANAGEMENT ---------- */
+
+.file-label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 8px;
+
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+input[type="file"] {
+    width: 100%;
+    font-size: 11px;
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 7px 10px;
+
+    color: var(--text);
+    background: #243650;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+/* ---------- 21. COLLISION LOG TABLE ---------- */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 11px;
+}
+
+thead {
+    background: #17263b;
+}
+
+th,
+td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+th {
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 850;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+td {
+    color: #d3e0f1;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: rgba(66, 217, 245, 0.035);
+}
+
+/* ---------- 22. SETTINGS ---------- */
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.setting-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 13px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    color: #c9d7e9;
+    background: rgba(8, 16, 30, 0.48);
+
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.setting-option:hover {
+    border-color: var(--border-bright);
+}
+
+.setting-option input {
+    flex-shrink: 0;
+    accent-color: var(--cyan);
+}
+
+/* ---------- 23. FOOTER ---------- */
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    padding: 25px 12px 32px;
+
+    border-top: 1px solid var(--border);
+
+    color: #71839f;
+    font-size: 10px;
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+}
+
+/* ---------- 24. LIGHT THEME SUPPORT ---------- */
+
+body.light-theme {
+    color-scheme: light;
+
+    --bg: #edf3f9;
+    --bg-soft: #ffffff;
+    --panel: #ffffff;
+    --panel-hover: #f3f7fc;
+    --panel-inner: #f5f8fc;
+
+    --border: #d4dfec;
+    --border-bright: #a7bfd9;
+
+    --text: #17263b;
+    --muted: #64758c;
+
+    background:
+        radial-gradient(
+            ellipse at 10% 0%,
+            #dcecfb,
+            transparent 45%
+        ),
+        #edf3f9;
+}
+
+.light-theme .topbar {
+    border-color: var(--border);
+}
+
+.light-theme .panel,
+.light-theme .stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 25px rgba(27, 48, 74, 0.07);
+}
+
+.light-theme .telemetry-item,
+.light-theme .sensor-card,
+.light-theme .analytics-item,
+.light-theme .setting-option,
+.light-theme .brain-visualization,
+.light-theme .chart-container {
+    background: #f5f8fc;
+    border-color: var(--border);
+}
+
+.light-theme .secondary-button,
+.light-theme select,
+.light-theme input[type="file"] {
+    color: var(--text);
+    background: #e7eef7;
+    border-color: var(--border);
+}
+
+.light-theme .decision-card {
+    background: #edf9fc;
+}
+
+.light-theme .neuron {
+    background: #e9f8fc;
+    color: #176078;
+}
+
+.light-theme .output-neuron {
+    background: #e7f9ef;
+    color: #147b50;
+}
+
+.light-theme .warning-card {
+    background: #fff7e9;
+}
+
+.light-theme .simulation-overlay {
+    background: rgba(10, 20, 35, 0.55);
+}
+
+/* ---------- 25. RESPONSIVE: LAPTOPS ---------- */
+
+@media (max-width: 1350px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .main-layout {
+        grid-template-columns: minmax(0, 1.45fr) minmax(270px, 0.9fr);
+    }
+
+    .analytics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ---------- 26. RESPONSIVE: TABLETS ---------- */
+
+@media (max-width: 980px) {
+    .app-container {
+        width: min(100% - 28px, 800px);
+    }
+
+    .main-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sidebar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+
+    .sidebar > .panel {
+        min-width: 0;
+    }
+
+    .canvas-wrapper {
+        height: 65vh;
+        min-height: 390px;
+    }
+
+    .simulation-toolbar {
+        align-items: stretch;
+    }
+
+    .simulation-toolbar label {
+        align-self: center;
+    }
+}
+
+/* ---------- 27. RESPONSIVE: MOBILE ---------- */
+
+@media (max-width: 620px) {
+    .app-container {
+        width: calc(100% - 22px);
+    }
+
+    main {
+        gap: 14px;
+        padding-top: 15px;
+    }
+
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+        padding-block: 18px;
+    }
+
+    .header-actions {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .brand-icon {
+        width: 43px;
+        height: 43px;
+        border-radius: 12px;
+    }
+
+    .brand h1 {
+        font-size: 23px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    .stat-card {
+        padding: 13px;
+    }
+
+    .stat-card h2 {
+        font-size: 23px;
+    }
+
+    .panel {
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .panel-header {
+        gap: 8px;
+    }
+
+    .canvas-wrapper {
+        height: 58vh;
+        min-height: 340px;
+    }
+
+    .simulation-toolbar {
+        gap: 7px;
+    }
+
+    .simulation-toolbar select {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .simulation-toolbar button {
+        flex: 1;
+    }
+
+    .sidebar {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 13px;
+    }
+
+    .brain-visualization {
+        grid-template-columns:
+            minmax(0, 1fr) 15px
+            minmax(0, 1fr) 15px
+            minmax(0, 1fr);
+        gap: 5px;
+        padding: 10px 6px;
+    }
+
+    .brain-layer h3 {
+        font-size: 8px;
+        letter-spacing: 0;
+    }
+
+    .neuron {
+        font-size: 8px;
+        min-height: 24px;
+    }
+
+    .brain-connector {
+        font-size: 16px;
+    }
+
+    .analytics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .settings-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .button-group > button {
+        flex: 1 1 140px;
+    }
+
+    .simulation-footer {
+        gap: 10px;
+    }
+}
+
+/* ---------- 28. SMALL MOBILE ---------- */
+
+@media (max-width: 360px) {
+    .app-container {
+        width: calc(100% - 16px);
+    }
+
+    .stat-card {
+        padding: 10px;
+    }
+
+    .stat-card h2 {
+        font-size: 20px;
+    }
+
+    .telemetry-grid {
+        gap: 6px;
+    }
+
+    .telemetry-item {
+        padding: 9px;
+    }
+
+    .sensor-grid {
+        gap: 6px;
+    }
+
+    .sensor-card {
+        padding: 9px 5px;
+    }
+
+    .output-row {
+        grid-template-columns: 78px minmax(25px, 1fr) 32px;
+        gap: 5px;
+    }
+
+    .brain-visualization {
+        padding-inline: 4px;
+    }
+}
+
+/* ---------- 29. ACCESSIBILITY ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
