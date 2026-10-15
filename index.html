@@ -3,12 +3,608 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>self driving car</title>
+    <meta name="theme-color" content="#0b1120">
+    <title>Autonomous AI | Self-Driving Car Simulator</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
+
 <body>
-    <canvas id="mycanavas"></canvas>
+    <div class="app-container">
+
+        <!-- HEADER -->
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-icon">AI</div>
+                <div>
+                    <h1>Autonomous AI</h1>
+                    <p>Self-Driving Car Simulation Platform</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <span class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span id="systemStatus">SYSTEM READY</span>
+                </span>
+
+                <button id="themeButton" class="secondary-button"
+                        type="button" aria-label="Toggle theme">
+                    ☼ Theme
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN DASHBOARD -->
+        <main>
+
+            <!-- TOP STATISTICS -->
+            <section class="stats-grid" aria-label="Simulation statistics">
+
+                <article class="stat-card">
+                    <span class="stat-label">GENERATION</span>
+                    <h2 id="generation">1</h2>
+                    <p>AI training cycle</p>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-label">ACTIVE CARS</span>
+                    <h2 id="activeCars">0</h2>
+                    <p>Cars in simulation</p>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-label">BEST DISTANCE</span>
+                    <h2 id="bestDistance">0</h2>
+                    <p>Virtual distance</p>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-label">BEST SPEED</span>
+                    <h2 id="bestSpeed">0</h2>
+                    <p>Simulation units/frame</p>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-label">AI FITNESS</span>
+                    <h2 id="fitness">0</h2>
+                    <div class="progress-track">
+                        <div id="fitnessBar" class="progress-fill"
+                             style="width: 0%"></div>
+                    </div>
+                </article>
+
+                <article class="stat-card">
+                    <span class="stat-label">COLLISIONS</span>
+                    <h2 id="collisionCount">0</h2>
+                    <p>Recorded collisions</p>
+                </article>
+
+            </section>
+
+            <!-- MAIN SIMULATION AND SIDEBAR -->
+            <section class="main-layout">
+
+                <!-- SIMULATION -->
+                <section class="panel simulation-panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h2>Simulation Environment</h2>
+                            <p>Virtual road and autonomous vehicle</p>
+                        </div>
+
+                        <span id="simulationBadge" class="badge">
+                            READY
+                        </span>
+                    </div>
+
+                    <div class="simulation-toolbar">
+                        <label for="drivingMode">Driving mode</label>
+
+                        <select id="drivingMode">
+                            <option value="ai">AI Autonomous</option>
+                            <option value="manual">Manual Control</option>
+                        </select>
+
+                        <button id="sensorToggle" type="button"
+                                class="secondary-button">
+                            Toggle Sensors
+                        </button>
+
+                        <button id="allCarsToggle" type="button"
+                                class="secondary-button">
+                            Show All Cars
+                        </button>
+                    </div>
+
+                    <div class="canvas-wrapper">
+                        <canvas id="carCanvas"
+                                aria-label="Self-driving car road simulation">
+                        </canvas>
+
+                        <div id="overlay" class="simulation-overlay">
+                            <div class="overlay-card">
+                                <h2>Autonomous AI</h2>
+                                <p>Ready to start simulation</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="simulation-footer">
+                        <span>
+                            <span class="legend-dot car-dot"></span>
+                            AI vehicles
+                        </span>
+                        <span>
+                            <span class="legend-dot sensor-dot"></span>
+                            Sensors
+                        </span>
+                        <span>
+                            <span class="legend-dot road-dot"></span>
+                            Road boundaries
+                        </span>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>Simulation Controls</h3>
+
+                        <div class="button-group">
+                            <button id="pauseButton" type="button"
+                                    class="primary-button">
+                                Pause / Resume
+                            </button>
+
+                            <button id="restartButton" type="button"
+                                    class="secondary-button">
+                                Restart Simulation
+                            </button>
+                        </div>
+
+                        <div class="slider-group">
+                            <label for="speedControl">
+                                Simulation Speed
+                                <strong id="speedValue">1x</strong>
+                            </label>
+
+                            <input id="speedControl" type="range"
+                                   min="1" max="5" value="1" step="1">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RIGHT SIDEBAR -->
+                <aside class="sidebar">
+
+                    <!-- LIVE TELEMETRY -->
+                    <section class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <h2>Live Telemetry</h2>
+                                <p>Current vehicle data</p>
+                            </div>
+                            <span class="panel-icon">◉</span>
+                        </div>
+
+                        <div class="telemetry-grid">
+                            <div class="telemetry-item">
+                                <span>Virtual X</span>
+                                <strong id="locationX">0</strong>
+                            </div>
+
+                            <div class="telemetry-item">
+                                <span>Virtual Y</span>
+                                <strong id="locationY">0</strong>
+                            </div>
+
+                            <div class="telemetry-item">
+                                <span>Speed</span>
+                                <strong id="telemetrySpeed">0</strong>
+                            </div>
+
+                            <div class="telemetry-item">
+                                <span>Steering</span>
+                                <strong id="steeringValue">--</strong>
+                            </div>
+
+                            <div class="telemetry-item">
+                                <span>Distance</span>
+                                <strong id="distanceValue">0</strong>
+                            </div>
+
+                            <div class="telemetry-item">
+                                <span>Vehicle status</span>
+                                <strong id="locationText">Waiting</strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- AI DECISION -->
+                    <section class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <h2>AI Decision Center</h2>
+                                <p>Predicted driving action</p>
+                            </div>
+                        </div>
+
+                        <div class="decision-card">
+                            <span class="decision-label">CURRENT ACTION</span>
+                            <h3 id="aiDecision">Waiting for AI</h3>
+                            <p id="drivingStatus">
+                                Start the simulation to view decisions.
+                            </p>
+                        </div>
+
+                        <div class="output-row">
+                            <span>Left steering</span>
+                            <div class="mini-progress">
+                                <div id="leftOutputBar"
+                                     class="mini-progress-fill"
+                                     style="width:0%"></div>
+                            </div>
+                            <strong id="leftOutput">0%</strong>
+                        </div>
+
+                        <div class="output-row">
+                            <span>Forward</span>
+                            <div class="mini-progress">
+                                <div id="forwardOutputBar"
+                                     class="mini-progress-fill"
+                                     style="width:0%"></div>
+                            </div>
+                            <strong id="forwardOutput">0%</strong>
+                        </div>
+
+                        <div class="output-row">
+                            <span>Right steering</span>
+                            <div class="mini-progress">
+                                <div id="rightOutputBar"
+                                     class="mini-progress-fill"
+                                     style="width:0%"></div>
+                            </div>
+                            <strong id="rightOutput">0%</strong>
+                        </div>
+                    </section>
+
+                    <!-- MANUAL DRIVING -->
+                    <section class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <h2>Manual Control</h2>
+                                <p>Keyboard driving controls</p>
+                            </div>
+                        </div>
+
+                        <div class="manual-controls">
+                            <button id="moveForwardButton" type="button"
+                                    aria-label="Accelerate">
+                                ▲
+                            </button>
+
+                            <div class="manual-middle">
+                                <button id="moveLeftButton" type="button"
+                                        aria-label="Steer left">
+                                    ◀
+                                </button>
+
+                                <button id="brakeButton" type="button"
+                                        aria-label="Brake">
+                                    ■
+                                </button>
+
+                                <button id="moveRightButton" type="button"
+                                        aria-label="Steer right">
+                                    ▶
+                                </button>
+                            </div>
+
+                            <button id="moveBackwardButton" type="button"
+                                    aria-label="Reverse">
+                                ▼
+                            </button>
+                        </div>
+
+                        <p class="help-text">
+                            Keyboard: Arrow keys or W, A, S, D.
+                            Manual controls require JavaScript support.
+                        </p>
+                    </section>
+
+                </aside>
+            </section>
+
+            <!-- AI BRAIN -->
+            <section class="panel section-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Neural Network Visualization</h2>
+                        <p>Input sensors → hidden layer → driving outputs</p>
+                    </div>
+                    <span class="badge">9 → 8 → 3</span>
+                </div>
+
+                <div id="brainVisualization" class="brain-visualization">
+                    <div class="brain-layer">
+                        <h3>INPUTS</h3>
+                        <div class="neuron-list">
+                            <span class="neuron">Sensor 1</span>
+                            <span class="neuron">Sensor 2</span>
+                            <span class="neuron">Sensor 3</span>
+                            <span class="neuron">Sensor 4</span>
+                            <span class="neuron">Sensor 5</span>
+                            <span class="neuron">Sensor 6</span>
+                            <span class="neuron">Sensor 7</span>
+                            <span class="neuron">Sensor 8</span>
+                            <span class="neuron">Sensor 9</span>
+                        </div>
+                    </div>
+
+                    <div class="brain-connector">→</div>
+
+                    <div class="brain-layer">
+                        <h3>HIDDEN LAYER</h3>
+                        <div class="neuron-list">
+                            <span class="neuron">N1</span>
+                            <span class="neuron">N2</span>
+                            <span class="neuron">N3</span>
+                            <span class="neuron">N4</span>
+                            <span class="neuron">N5</span>
+                            <span class="neuron">N6</span>
+                            <span class="neuron">N7</span>
+                            <span class="neuron">N8</span>
+                        </div>
+                    </div>
+
+                    <div class="brain-connector">→</div>
+
+                    <div class="brain-layer">
+                        <h3>OUTPUTS</h3>
+                        <div class="neuron-list">
+                            <span class="neuron output-neuron">Left</span>
+                            <span class="neuron output-neuron">Forward</span>
+                            <span class="neuron output-neuron">Right</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="help-text">
+                    The network layout is a structural preview.
+                    Live neuron activations require JavaScript integration.
+                </p>
+            </section>
+
+            <!-- SENSOR PANEL -->
+            <section class="panel section-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Sensor Monitoring</h2>
+                        <p>Obstacle detection and sensor readings</p>
+                    </div>
+                    <span id="sensorStatus" class="badge">STANDBY</span>
+                </div>
+
+                <div id="sensorReadings" class="sensor-grid">
+                    <div class="sensor-card">
+                        <span>Front left</span>
+                        <strong id="sensor1">--</strong>
+                    </div>
+                    <div class="sensor-card">
+                        <span>Front</span>
+                        <strong id="sensor2">--</strong>
+                    </div>
+                    <div class="sensor-card">
+                        <span>Front right</span>
+                        <strong id="sensor3">--</strong>
+                    </div>
+                    <div class="sensor-card">
+                        <span>Left side</span>
+                        <strong id="sensor4">--</strong>
+                    </div>
+                    <div class="sensor-card">
+                        <span>Right side</span>
+                        <strong id="sensor5">--</strong>
+                    </div>
+                    <div class="sensor-card">
+                        <span>Rear left</span>
+                        <strong id="sensor6">--</strong>
+                    </div>
+                    <div class="sensor-card">
+                        <span>Rear</span>
+                        <strong id="sensor7">--</strong>
+                    </div>
+                    <div class="sensor-card">
+                        <span>Rear right</span>
+                        <strong id="sensor8">--</strong>
+                    </div>
+                    <div class="sensor-card">
+                        <span>Additional sensor</span>
+                        <strong id="sensor9">--</strong>
+                    </div>
+                </div>
+
+                <div class="warning-card">
+                    <strong>Obstacle alert</strong>
+                    <span id="obstacleWarning">No current sensor data</span>
+                </div>
+            </section>
+
+            <!-- TRAINING ANALYTICS -->
+            <section class="panel section-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>AI Training Analytics</h2>
+                        <p>Track performance over generations</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="fitnessChart"
+                            aria-label="AI fitness history chart">
+                    </canvas>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-item">
+                        <span>Best fitness</span>
+                        <strong id="bestFitness">0</strong>
+                    </div>
+                    <div class="analytics-item">
+                        <span>Average fitness</span>
+                        <strong id="averageFitness">0</strong>
+                    </div>
+                    <div class="analytics-item">
+                        <span>Training status</span>
+                        <strong id="trainingStatus">Ready</strong>
+                    </div>
+                    <div class="analytics-item">
+                        <span>Completed generations</span>
+                        <strong id="completedGenerations">0</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRACK MAP -->
+            <section class="panel section-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Virtual Track Map</h2>
+                        <p>Overview of the simulation environment</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="trackMap"
+                            aria-label="Virtual track map">
+                    </canvas>
+                </div>
+
+                <p class="help-text">
+                    This is a virtual simulation map, not a real-world GPS map.
+                </p>
+            </section>
+
+            <!-- MODEL MANAGEMENT -->
+            <section class="panel section-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>AI Model Management</h2>
+                        <p>Save, load and export your training results</p>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="saveButton" type="button"
+                            class="primary-button">
+                        Save Best AI
+                    </button>
+
+                    <button id="loadButton" type="button"
+                            class="secondary-button">
+                        Load AI Model
+                    </button>
+
+                    <button id="exportReportButton" type="button"
+                            class="secondary-button">
+                        Export CSV Report
+                    </button>
+
+                    <button id="exportJSONButton" type="button"
+                            class="secondary-button">
+                        Export Training JSON
+                    </button>
+                </div>
+
+                <label for="loadFile" class="file-label">
+                    Choose saved AI model
+                </label>
+
+                <input id="loadFile" type="file"
+                       accept=".json,application/json">
+
+                <p id="modelStatus" class="help-text">
+                    No model loaded.
+                </p>
+            </section>
+
+            <!-- COLLISION LOG -->
+            <section class="panel section-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Collision Log</h2>
+                        <p>Events detected during simulation</p>
+                    </div>
+
+                    <button id="clearCollisionLog" type="button"
+                            class="secondary-button">
+                        Clear Log
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Generation</th>
+                                <th>Vehicle</th>
+                                <th>Event</th>
+                            </tr>
+                        </thead>
+                        <tbody id="collisionLog">
+                            <tr>
+                                <td colspan="4">No collision events recorded.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SETTINGS -->
+            <section class="panel section-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Simulation Settings</h2>
+                        <p>Configure the dashboard experience</p>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <label class="setting-option">
+                        <input id="soundToggle" type="checkbox">
+                        Enable sound alerts
+                    </label>
+
+                    <label class="setting-option">
+                        <input id="autoSaveToggle" type="checkbox">
+                        Auto-save best model
+                    </label>
+
+                    <label class="setting-option">
+                        <input id="showCoordinatesToggle"
+                               type="checkbox" checked>
+                        Show virtual coordinates
+                    </label>
+
+                    <label class="setting-option">
+                        <input id="showChartToggle"
+                               type="checkbox" checked>
+                        Show training chart
+                    </label>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>Autonomous AI Simulation Platform</p>
+            <p>Built with HTML, CSS, JavaScript and neural networks</p>
+            <p>Research and educational simulation — not a real vehicle controller.</p>
+        </footer>
+
+    </div>
+
+    <!-- Keep your existing simulation JavaScript -->
     <script src="main.js"></script>
 </body>
 </html>
